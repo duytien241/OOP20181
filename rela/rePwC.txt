@@ -1,5 +1,3 @@
-work in
-live in
-come from
-visit
-love
+que_huong
+cong_tac
+toi_tham

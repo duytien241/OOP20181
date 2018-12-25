@@ -1,10 +1,4 @@
-in same country
-in
-same location
-is
-held by same organization
-is
-held by same person
-after
-before
-same time
+to_chuc_cung
+cung_nha_tai_tro
+cung_dia_diem
+khong_to_chuc_cung

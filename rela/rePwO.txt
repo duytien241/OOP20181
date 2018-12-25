@@ -1,4 +1,2 @@
-manage
-work in
-have
-leave
+giam_doc
+nhan_vien

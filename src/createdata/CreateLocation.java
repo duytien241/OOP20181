@@ -3,6 +3,7 @@ package createdata;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import datacount.GetID;
 import enity.Location;
 
 public class CreateLocation extends CreateEntity {
@@ -10,6 +11,7 @@ public class CreateLocation extends CreateEntity {
 	private static ArrayList<String> locationName = new ArrayList<String>();
 	private static ArrayList<String> locationDescription = new ArrayList<String>();
 	public CreateLocation() throws IOException {
+		indeti = Integer.parseInt(datacount.GetID.id.get(2));
 		ReadFile rdf = new ReadFile();
 		rdf.setlink("dataentity/location.txt");
 		locationName = rdf.readf();
@@ -23,4 +25,9 @@ public class CreateLocation extends CreateEntity {
 		Location tmp = new Location(iden, label, des, this.getLink(),this.getDate()) ;
 		return tmp;
 	}
+	public static long getIndeti() {
+		return indeti;
+	}
+	
+	
 }

@@ -1,1 +1,3 @@
-held in
+to_chuc_tai
+bo_qua
+khong_to_chuc_tai

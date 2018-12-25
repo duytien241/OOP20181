@@ -3,17 +3,20 @@ package createdata;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import datacount.GetID;
 import enity.Location;
 import enity.Person;
 
 public class CreatePerson extends CreateEntity {
-	private static int indeti = 0 ;
+	private static int indeti  ;
 	private static ArrayList<String> personName = new ArrayList<String>();
 	private static ArrayList<String> personDescription = new ArrayList<String>();
 	private static ArrayList<String> personNational = new ArrayList<String>();
 	private static ArrayList<String> personJob = new ArrayList<String>();
+	private ReadFile rdf;
 	public CreatePerson() throws IOException {
-		ReadFile rdf = new ReadFile();
+		indeti = Integer.parseInt(datacount.GetID.id.get(4));
+		rdf = new ReadFile();
 		rdf.setlink("dataentity/personname.txt");
 		personName = rdf.readf();
 		rdf.setlink("dataentity/persondes.txt");
@@ -45,5 +48,8 @@ public class CreatePerson extends CreateEntity {
 		Location tmp3 = crl.getLocation();
 		System.out.println(tmp.getLabel() + tmp.getLink());
 		System.out.println(tmp3.getLabel() + tmp3.getLink());
+	}
+	public static long getIndeti() {
+		return indeti;
 	}
 }

@@ -1,1 +1,2 @@
-in
+co_tru_so
+khong_co_tru_so

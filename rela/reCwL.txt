@@ -1,3 +1,2 @@
-have
-near
-far
+chua
+khong_chua

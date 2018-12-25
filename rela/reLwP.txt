@@ -1,1 +1,2 @@
-have
+co
+khong_co

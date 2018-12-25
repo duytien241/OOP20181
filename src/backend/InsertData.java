@@ -47,6 +47,7 @@ public class InsertData {
 	private IRI HAS_DESCRIPTION;
 	private IRI HAS_LINK;
 	private IRI HAS_DATE;
+	private IRI HAS_SEX;
 	private IRI HAS_AGE;
 	private IRI HAS_JOB;
 	private IRI label;
@@ -54,6 +55,7 @@ public class InsertData {
 	private Literal name;
 	private Literal link;
 	private Literal date;
+	private Literal sex;
 	private Literal age;
 	private Literal job;
 	
@@ -72,6 +74,7 @@ public class InsertData {
 		HAS_DATE = vf.createIRI(NAMESPACE, "Date");
 		HAS_AGE =vf.createIRI(NAMESPACE, "Age");
 		HAS_JOB =vf.createIRI(NAMESPACE, "Job");
+		HAS_SEX = vf.createIRI(NAMESPACE,"SEX");
 		
 	}
 	public IRI addEntity(Person p) {
@@ -80,6 +83,7 @@ public class InsertData {
 		describe = vf.createLiteral(p.getDescribe());
 		link = vf.createLiteral(p.getLink());
 		date = vf.createLiteral(p.getDate());
+		sex = vf.createLiteral(p.getMale());
 		age = vf.createLiteral(p.getAge());
 		job = vf.createLiteral(p.getJob());
 		model.add(tmp, RDF.TYPE,PERSON);
@@ -87,6 +91,7 @@ public class InsertData {
 		model.add(tmp,HAS_DESCRIPTION,describe);
 		model.add(tmp,HAS_LINK,link);
 		model.add(tmp,HAS_DATE,date);
+		model.add(tmp,HAS_SEX,sex);
 		model.add(tmp,HAS_AGE,age);
 		model.add(tmp,HAS_JOB,job);
 		con.add(model);
@@ -170,10 +175,8 @@ public class InsertData {
 	public void addRelastt(IRI entity1, IRI relationship, IRI entity2 ) {
 		model.add(entity1, relationship, entity2);
 		con.add(model);
-		}
 	
-	public void insertdb() {
-		
 	}
+	
 	
 }

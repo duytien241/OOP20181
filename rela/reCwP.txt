@@ -1,3 +1,5 @@
-have
-honor
-reward
+vinh_danh
+trao_thuong
+truy_na
+bat_giu
+truy_sat

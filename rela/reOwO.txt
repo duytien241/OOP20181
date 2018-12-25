@@ -1,7 +1,3 @@
-is managed by same person
-in
-the same country
-
-have contract
-
-have same headquarter
+doi_tac
+doi_thu
+lien_ket

@@ -1,2 +1,3 @@
-have
-reward
+dau_tu
+khong_dau_tu
+vui_dap

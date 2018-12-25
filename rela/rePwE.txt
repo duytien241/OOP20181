@@ -1,6 +1,3 @@
-address
-participate
-held
-absent
-destroy
-interested in
+toi_tham
+tham_gia
+khong_tham_gia

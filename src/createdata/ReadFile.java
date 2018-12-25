@@ -36,4 +36,22 @@ public class ReadFile {
 		
 		return res;
 	}
+	public long readind() throws IOException{
+		long res =0;
+		file = new File(this.url_file);
+		
+		try {
+			bf = new BufferedReader(new FileReader(url_file));
+			String tmp = bf.readLine();
+			while(tmp != null){
+				res = Long.parseLong(tmp);
+				tmp =bf.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bf.close();
+		return res;
+	}
 }

@@ -1,1 +1,2 @@
-held in
+dien_ra_tai
+khong_dien_ra_tai
