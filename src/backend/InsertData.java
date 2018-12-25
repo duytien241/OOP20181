@@ -154,12 +154,12 @@ public class InsertData {
 		con.add(model);
 		return tmp;
 	}
-	public IRI addEntity(Country e) {
-		IRI tmp = vf.createIRI(countryNamespace,e.getLabel());
-		name = vf.createLiteral(e.getName());
-		describe = vf.createLiteral(e.getDescribe());
-		link = vf.createLiteral(e.getLink());
-		date = vf.createLiteral(e.getDate());
+	public IRI addEntity(Country c) {
+		IRI tmp = vf.createIRI(countryNamespace,c.getLabel());
+		name = vf.createLiteral(c.getName());
+		describe = vf.createLiteral(c.getDescribe());
+		link = vf.createLiteral(c.getLink());
+		date = vf.createLiteral(c.getDate());
 		model.add(tmp, RDF.TYPE,COUNTRY);
 		model.add(tmp,HAS_NAME,name);
 		model.add(tmp,HAS_DESCRIPTION,describe);
