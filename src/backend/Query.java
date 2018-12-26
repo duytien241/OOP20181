@@ -187,7 +187,7 @@ public class Query {
 				"filter regex(?a,\"Janenna Dangl\")"+
 				"filter (?o> 20)"+
 				"}";
-			// dưa ra con của Janenna Dangl  có tuổi lớn hơn 20 và làm việc tại đâu
+			// dưa ra con của Janenna Dangl  có tuổi lớn hơn 20 và làm nhân viên ở đâu
 			public static String query16 = "prefix enti: <http://www.oop.org/person/>  " + 
 					"prefix re: <http://www.oop.org/relationpwp/>  " + 
 					"prefix re2: <http://www.oop.org/relationpwo/>  " + 
@@ -195,35 +195,75 @@ public class Query {
 					"   " + 
 					"select  DISTINCT ?s ?p ?o where {  " + 
 					"?cou rdf:type lc:Person."+
-					" 	?cou lc:Label ?a. " +
 					"   ?cou ?qh ?org."+
 					" 	?org lc:Label ?s. " +
-					"	?org lc:Age ?o2."+
+					"	?org lc:Age ?a."+
 					" ?org lc:Describe ?p."+
 					" ?org ?qh2 ?com."+
 					" ?com lc:Label ?o."+
-					"filter (?qh2 =re2:lam_viec)"+
+					"filter (?qh2 =re2:nhan_vien)"+
 					"filter( ?qh = re:bo)  " + 
 					"filter regex(?a,\"Janenna Dangl\")"+
-					"filter (?o2 > 20)"+
+					"filter (?a > 20)"+
 					"}";
-			//
-			public static String query17 = "prefix enti: <http://www.oop.org/person/>  " + 
-					"prefix re: <http://www.oop.org/relationpwp/>  " + 
-					"prefix lc: <http://www.oop.org/>  " + 
-					"   " + 
-					"select  DISTINCT ?s ?p ?o where {  " + 
-					"?cou rdf:type lc:Person."+
-					" 	?cou lc:Label ?a. " +
-					"   ?cou ?qh ?org."+
-					" 	?org lc:Label ?s. " +
-					"	?org lc:Age ?o."+
-					" ?org lc:Describe ?p."+
-					"filter( ?qh = re:bo)  " + 
-					"filter regex(?a,\"Janenna Dangl\")"+
-					"filter (?o> 20)"+
+			//  International Exhibition Von Inc do ai tổ chức, người đó thuộc tổ chức nào, tổ chức đó thành lập năm bao nhiêu?
+			public static String query17 = "PREFIX re:<http://www.oop.org/relationowp/> \n"+
+					"PREFIX re2:<http://www.oop.org/person/relationpwo/> \n"+
+					"PREFIX re3:<http://www.oop.org/person/relationowt/> \n"+
+					"PREFIX label:<http://www.oop.org/> \n" + 
+					 "SELECT ?s ?p ?o ?a ?b ?c ?t\n"+
+					 "WHERE { \n"+
+					 " ?eve label:Label ?s .\n" +
+					 " ?eve ?p ?per .\n"+
+					 " FILTER (?p = re:to_chuc_boi)" +
+					 "?per label:Label ?o .\n"+
+					 "?per ?a ?org .\n"+
+					 " FILTER (?a = re2:lam_viec_tai)" + 
+					 " ?org label:Label ?b .\n"+
+					 " ?org ?c ?time .\n"+
+					 " FILTER (?c = re3:thanh_lap_tai)"+
+					 " ?time label:label ?t .\n"+
+					 " FILTER regex(?s, \"IVon Inc\") "+
 					"}";
-	public static void ketqua1(String query) {
+			//In ra những người tham dự sự kiện Seamless Vietnam nhưng không tham dự VietFood
+			public static String query18 =  "PREFIX re:<http.www.oop.org/relationpwe/> \n"+
+			"PREFIX person:<http://www.oop.org/person/> \n"+
+			"PREFIX label:<http://www.oop.org/> \n"+
+			"SELECT ?o \n"+
+		    "WHERE { \n"+
+			"?x label:Label ?o."+
+			" ?x ?p ?s .\n"+
+			" ?s label:Label ?a .\n" +
+			" FILTER regex(?p, \"tham_gia\")"  +
+			" FILTER regex (?a , \"Seamless Vietnam\")" +
+			" FILTER (?a != \"VietFood\"^^<http://www.w3.org/2001/XMLSchema#string>)" +
+			 "}";	
+			//Location China đầu tư cho bao nhiêu tổ chức
+			public static String query19 = "PREFIX label:<http://www.oop.org/> \n"+
+				"PREFIX re:<http.www.oop.org/relationcwo/> \n"+
+				"SELECT count(?s) as ?o \n"+
+			    "WHERE {"+
+			    "?s rdf:type label:Country .\n"+
+			    "?s label:Label ?name .\n"+
+			    " FILTER regex(?name, \"China\")"+
+			    "?s ?qh ?c .\n"+
+			    " FILTER regex(?qh, \"dau_tu\")"+
+				"}";
+			// 10 chi tiet Event do tổ chức nào chủ trì thời gian nào diễn ra ?
+			public static String query20= "PREFIX re:<http://www.oop.org/relationowe/> \n" +
+					"PREFIX re2:<http://www.oop.org/relationewt/> \n" +
+			"PREFIX label:<http://www.oop.org/> \n" +
+			"SELECT ?s ?p ?o ?t\n" +
+		    "WHERE { \n" +
+		    " ?event label:Label ?s .\n" +
+			" ?event ?p ?org .\n"+
+			" ?event ?q ?time .\n"+
+			" ?org label:Label ?o .\n" +
+			" ?time label:Label ?t .\n" +
+		//	" FILTER (?p =re:to_chuc && ?q = re2:vao)" +
+			"}" +
+			" LIMIT 10";
+			public static void ketqua1(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
 		TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL,query);
@@ -260,6 +300,7 @@ public class Query {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time query: " + (endTime - begin) );
 	}
+	//3 tham so
 	public static void ketqua2(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -270,13 +311,14 @@ public class Query {
 			String p = bind.getValue("s").stringValue();
 			String l = bind.getValue("p").stringValue();
 			String d = bind.getValue("o").stringValue();
-			System.out.printf( "Label : %s, Dec : %s, Date : %s\n",p,l,d);
+			System.out.printf( "s: %s, p : %s, o : %s\n",p,l,d);
 		
 //		
 		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time query: " + (endTime - begin) );
 	}
+	//2 tham số
 	public static void ketqua5(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -284,10 +326,10 @@ public class Query {
 		TupleQueryResult result = tupleQuery.evaluate();
 		while (result.hasNext()) {
 			BindingSet bind = result.next();
-			String p = bind.getValue("Tennguoi").stringValue();
-			String l = bind.getValue("Tenevent").stringValue();
+			String p = bind.getValue("s").stringValue();
+			String l = bind.getValue("p").stringValue();
 			
-			System.out.printf( "Label : %s, Dec : %s\n",p,l);
+			System.out.printf( "s : %s, p : %s\n",p,l);
 		
 //		
 		}
@@ -301,8 +343,8 @@ public class Query {
 		TupleQueryResult result = tupleQuery.evaluate();
 		while (result.hasNext()) {
 			BindingSet bind = result.next();
-			String s = bind.getValue("s").stringValue();
-			System.out.printf( "Count : %s\n",s);
+			String s = bind.getValue("o").stringValue();
+			System.out.printf( "KQ: %s\n",s);
 		
 		}
 		long endTime = System.currentTimeMillis();
@@ -310,7 +352,7 @@ public class Query {
 	}
 	public static void main (String args[]){
 
-		ketqua2(query16);
+		ketqua2(query20);
 	}
 	
 }
