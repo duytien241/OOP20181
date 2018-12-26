@@ -31,8 +31,7 @@ public class InsertData {
 	public String countryNamespace = "http://www.oop.org/country/";
 	public String timeNamespace = "http://www.oop.org/time/";
 	public String eventNamespace = "http://www.oop.org/event/";
-	public String relationshipNamespace = "http://www.oop.org/relation/";
-	private Model model = new TreeModel();
+	private Model model;
 	private RepositoryConnection con;
 	ValueFactory vf;
 	//IRI entity
@@ -74,7 +73,8 @@ public class InsertData {
 		HAS_DATE = vf.createIRI(NAMESPACE, "Date");
 		HAS_AGE =vf.createIRI(NAMESPACE, "Age");
 		HAS_JOB =vf.createIRI(NAMESPACE, "Job");
-		HAS_SEX = vf.createIRI(NAMESPACE,"SEX");
+		HAS_SEX = vf.createIRI(NAMESPACE,"Sex");
+		model = new TreeModel();
 		
 	}
 	public IRI addEntity(Person p) {
@@ -177,6 +177,8 @@ public class InsertData {
 		con.add(model);
 	
 	}
-	
+	public Model getModel() {
+		return model;
+	}
 	
 }

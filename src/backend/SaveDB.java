@@ -174,6 +174,7 @@ public class SaveDB {
 			
 		}
 		WriteID.updateID(crc.getIndeti(), cre.getIndeti(), crl.getIndeti(), cro.getIndeti(), crp.getIndeti(), crt.getIndeti());
+		inst.getModel().clear();
 		
 	}
 	public void GenRela(int numberrela) {

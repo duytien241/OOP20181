@@ -21,7 +21,7 @@ public class CreateTime extends CreateEntity {
 		timeDescription = rdf.readf();
 	}
 	public Time getTime() throws IOException {
-		String iden = "location" + ++indeti;
+		String iden = "time" + ++indeti;
 		String label = (String) timeName.get((int)(Math.random()*timeName.size()));
 		String des = timeDescription.get((int)(Math.random()*timeDescription.size()));
 		Time tmp = new Time(iden, label, des, this.getLink(),this.getDate()) ;

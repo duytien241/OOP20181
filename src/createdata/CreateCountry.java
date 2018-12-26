@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import datacount.GetID;
+import enity.Country;
 import enity.Event;
 import enity.Location;
 
@@ -21,11 +22,11 @@ public class CreateCountry extends CreateEntity {
 		rdf.setlink("dataentity/countrydes.txt");
 		countryDes = rdf.readf();
 	}
-	public Event getCountry() throws IOException {
+	public Country getCountry() throws IOException {
 		String iden = "country" + ++indeti;
 		String label = (String) countryName.get((int)(Math.random()*countryName.size()));
 		String des = countryDes.get((int)(Math.random()*countryDes.size()));
-		Event tmp = new Event(iden, label, des, this.getLink(),this.getDate()) ;
+		Country tmp = new Country(iden, label, des, this.getLink(),this.getDate()) ;
 		return tmp;
 	}
 	public static long getIndeti() {

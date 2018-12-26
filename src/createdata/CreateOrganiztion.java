@@ -21,7 +21,7 @@ public class CreateOrganiztion extends CreateEntity {
 		orgdes = rdf.readf();
 	}
 	public Organization getOrganization() throws IOException {
-		String iden = "location" + ++indeti;
+		String iden = "organization" + ++indeti;
 		String label = (String) orgName.get((int)(Math.random()*orgName.size()));
 		String des = orgdes.get((int)(Math.random()*orgdes.size()));
 		Organization tmp = new Organization(iden, label, des, this.getLink(),this.getDate()) ;

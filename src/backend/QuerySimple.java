@@ -18,7 +18,7 @@ public class QuerySimple {
 			" 	?label oop:Label ?dinhdanh. " + 
 			"    ?label oop:Age ?age. " + 
 			"    ?label oop:Describe ?mota.  " + 
-			"    ?label oop:SEX ?gioitinh.  " + 
+			"    ?label oop:Sex ?gioitinh.  " + 
 			"    ?label oop:Date ?ngaytrichrut.  " + 
 			"    ?label oop:Link ?link.  " + 
 			"    filter(?label = person:person1)  " + 
@@ -28,7 +28,7 @@ public class QuerySimple {
 			"PREFIX person:<http://www.oop.org/person/> \n"
 			+ "SELECT ?s ?p ?o \n"
 	    	+ "WHERE { ?s ?p ?o .\n"
-	    	+ " FILTER (?p = label:Age && ?o = 47 )"
+	    	+ " FILTER (?s= person:person4)"
 	    	+ "}";
 
 	// đưa ra thông tin country1
@@ -62,19 +62,60 @@ public class QuerySimple {
 				"    ?label enti:Describe ?mota.  " + 
 				"    ?label enti:Date ?date.  " + 
 				"    ?label enti:Link ?link.  " + 
-				"    filter(?label = event:event1)  " + 
+				"    filter(?label = event:event2)  " + 
 				"}";
 		//in ra thông tin organization
-				public static String query6 = "prefix org: <http://www.oop.org/organization/>  " + 
-						"prefix enti: <http://www.oop.org/>  " + 
-						"   " + 
-						"select  DISTINCT ?label ?dinhdanh ?mota ?date ?link where {  " + 
-						" 	?label enti:Label ?dinhdanh. " + 
-						"    ?label enti:Describe ?mota.  " + 
-						"    ?label enti:Date ?date.  " + 
-						"    ?label enti:Link ?link.  " + 
-						"    filter(?label = org:event1)  " + 
-						"}";
+			public static String query6 = "prefix org: <http://www.oop.org/organization/>  " + 
+				"prefix enti: <http://www.oop.org/>  " + 
+				"   " + 
+				"select  DISTINCT ?label ?dinhdanh ?mota ?date ?link where {  " + 
+				" 	?label enti:Label ?dinhdanh. " + 
+				"    ?label enti:Describe ?mota.  " + 
+				"    ?label enti:Date ?date.  " + 
+				"    ?label enti:Link ?link.  " + 
+				"    filter(?label = org:event1)  " + 
+				"}";
+		// in ra địa chỉ của Nancie Lyttle
+			public static String query7 = "prefix enti: <http://www.oop.org/person/>  " + 
+					"prefix re: <http://www.oop.org/relationpwl/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?s ?p ?o where {  " + 
+					" 	?x lc:Label ?s. " + 
+					" 	?x ?p ?country. " + 
+					"    ?country lc:Label ?o.  " + 
+					" FILTER regex(?s, \"Nancie Lyttle\") "+
+					"    filter( ?p = re:dia_chi)  " + 
+					"}";
+		// in ra tên 10 person
+			public static String query8 = "prefix enti: <http://www.oop.org/person/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?s where {  " + 
+					" 	?x lc:Label ?s. " + 
+					"    filter regex(str(?x), \"person\") " + 
+					"}" +
+					"LIMIT 10";
+			// in ra địa chỉ của các person
+			public static String query9 = "prefix enti: <http://www.oop.org/person/>  " + 
+					"prefix re: <http://www.oop.org/relationpwl/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?s ?p ?o where {  " + 
+					" 	?s ?p ?o. " + 
+					" FILTER regex(?s ,\"person\") "+
+					"filter( ?p = re:dia_chi)  " + 
+					"}";
+			// in ra các sự kiện mà các person tham gia
+			public static String query10 = "prefix enti: <http://www.oop.org/person/>  " + 
+					"prefix re: <http://www.oop.org/relationpwe/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?s ?p ?o where {  " + 
+					" 	?s ?p ?o. " + 
+					" FILTER regex(?s ,\"person\") "+
+					"filter( ?p = re:toi_tham)  " + 
+					"}";
 	public static void ketqua1(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -112,9 +153,41 @@ public class QuerySimple {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time query: " + (endTime - begin) );
 	}
+	public static void ketqua2(String query) {
+		long begin = System.currentTimeMillis();
+		connection = backend.ConnectDB.getRepositoryConnection();
+		TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL,query);
+		TupleQueryResult result = tupleQuery.evaluate();
+		while (result.hasNext()) {
+			BindingSet bind = result.next();
+			String p = bind.getValue("s").stringValue();
+			String l = bind.getValue("p").stringValue();
+			String d = bind.getValue("o").stringValue();
+			System.out.printf( "Label : %s, Dec : %s, Date : %s\n",p,l,d);
+		
+//		
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time query: " + (endTime - begin) );
+	}
+	public static void ketqua4(String query) {
+		long begin = System.currentTimeMillis();
+		connection = backend.ConnectDB.getRepositoryConnection();
+		TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL,query);
+		TupleQueryResult result = tupleQuery.evaluate();
+		while (result.hasNext()) {
+			BindingSet bind = result.next();
+			String s = bind.getValue("s").stringValue();
+			System.out.printf( "Label : %s\n",s);
+		
+//		
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time query: " + (endTime - begin) );
+	}
 	public static void main (String args[]){
 
-		ketqua3(query5);
+		ketqua2(query10);
 	}
 	
 }

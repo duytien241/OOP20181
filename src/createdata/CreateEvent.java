@@ -13,7 +13,6 @@ public class CreateEvent extends CreateEntity {
 	private static ArrayList<String> eventDescription = new ArrayList<String>();
 	private ReadFile rdf;
 	public CreateEvent() throws IOException {
-		datacount.GetID a = new GetID();
 		indeti = Integer.parseInt(datacount.GetID.id.get(1));
 		rdf = new ReadFile();
 		rdf.setlink("dataentity/event.txt");
