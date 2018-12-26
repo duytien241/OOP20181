@@ -25,10 +25,10 @@ public class QuerySimple {
 			"}";
 	// in thông tin của  những người 47 tuổi
 	public static String query2 = "PREFIX label:<http://www.oop.org/> \n"+
-			"PREFIX person:<http://www.oop.org/person/> \n"
+			"PREFIX person:<http://www.oop.org/event/> \n"
 			+ "SELECT ?s ?p ?o \n"
 	    	+ "WHERE { ?s ?p ?o .\n"
-	    	+ " FILTER (?s= person:person4)"
+	    	+ " FILTER regex(?s,\"event\")"
 	    	+ "}";
 
 	// đưa ra thông tin country1
@@ -116,6 +116,17 @@ public class QuerySimple {
 					" FILTER regex(?s ,\"person\") "+
 					"filter( ?p = re:toi_tham)  " + 
 					"}";
+			//Những sự kiện tổ chức tại 5333 Rockefeller Lane
+			public static String query11 = "prefix enti: <http://www.oop.org/location/>  " + 
+					"prefix re: <http://www.oop.org/relationewl/>  " + 
+					"prefix label: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  count(?s) as ?os where {  " +  
+					"?s rdf:type label:Location ."+
+					"?s label:label ?name .\n"+
+					" FILTER regex(?name, \"5333 Rockefeller Lane\") "+
+					"?s re:to_chuc_tai ?c " + 
+					"}";
 	public static void ketqua1(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -177,7 +188,7 @@ public class QuerySimple {
 		TupleQueryResult result = tupleQuery.evaluate();
 		while (result.hasNext()) {
 			BindingSet bind = result.next();
-			String s = bind.getValue("s").stringValue();
+			String s = bind.getValue("os").stringValue();
 			System.out.printf( "Label : %s\n",s);
 		
 //		
@@ -187,7 +198,7 @@ public class QuerySimple {
 	}
 	public static void main (String args[]){
 
-		ketqua2(query10);
+		ketqua2(query2);
 	}
 	
 }
