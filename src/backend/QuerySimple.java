@@ -27,8 +27,8 @@ public class QuerySimple {
 	public static String query2 = "PREFIX label:<http://www.oop.org/> \n"+
 			"PREFIX person:<http://www.oop.org/event/> \n"
 			+ "SELECT ?s ?p ?o \n"
-	    	+ "WHERE { ?s ?p ?o .\n"
-	    	+ " FILTER regex(?s,\"event\")"
+	    	+ "WHERE { ?pe label:Label ?s. ?pe label:Age ?p. ?pe label:Sex ?o."
+	    	+ " FILTER (?p = 47)"
 	    	+ "}";
 
 	// đưa ra thông tin country1
@@ -116,17 +116,58 @@ public class QuerySimple {
 					" FILTER regex(?s ,\"person\") "+
 					"filter( ?p = re:toi_tham)  " + 
 					"}";
-			//Những sự kiện tổ chức tại 5333 Rockefeller Lane
-			public static String query11 = "prefix enti: <http://www.oop.org/location/>  " + 
+			//Đếm sự kiện vào năm 2017
+			public static String query11 = "prefix enti: <http://www.oop.org/event/>  " + 
 					"prefix re: <http://www.oop.org/relationewl/>  " + 
-					"prefix label: <http://www.oop.org/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
 					"   " + 
-					"select  count(?s) as ?os where {  " +  
-					"?s rdf:type label:Location ."+
-					"?s label:label ?name .\n"+
-					" FILTER regex(?name, \"5333 Rockefeller Lane\") "+
-					"?s re:to_chuc_tai ?c " + 
+					"select  DISTINCT count(?s) as ?s where {  " + 
+					" ?eve	lc:Label ?s ."+
+					" ?eve  lc:Link ?p. "+
+					" ?eve 	lc:Date ?o." + 
+					
+				//	"filter( ?p = re:dien_ra_tai)  " +
+					"filter regex(?o ,\"2017\") "+
 					"}";
+			//in ra China đã tổ chức bao nhiêu event vào 2017
+			public static String query12 = "prefix enti: <http://www.oop.org/event/>  " + 
+					"prefix re: <http://www.oop.org/relationcwe/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT count(?s) as ?s where {  " + 
+					"?s rdf:type label:Country .\n"+
+					"?s label:Label ?name ."+
+					"filter regex(?name,\"China\""+
+					"?s re:to_chuc ?event"+
+					"?event re:vao ?t"+
+					"filter regex(?t ,\"2017\") "+
+					"}";
+			// in  ra sự kiện XXX tổ chức ở đâu vào thời điểm nào
+			public static String query13 ="prefix enti: <http://www.oop.org/event/>  " + 
+					"prefix re: <http://www.oop.org/relationewt/>  " + 
+					"prefix re2: <http://www.oop.org/relationewl/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?name ?time ?taidau where {  " + 
+					"?s rdf:type label:Event .\n"+
+					"?s label:Label ?name ."+
+					"filter regex(?name,\"XXX\""+
+					"?s re:to_chuc ?event"+
+					"?event re:vao ?time"+
+					"?event re2:dien_ra_tai ? location2"+
+					"?location2 lc:Label ?taidau"+
+					"}";
+			//những country nào đang truy sát ai
+			public static String query14 = "prefix enti: <http://www.oop.org/country/>  " + 
+					"prefix re: <http://www.oop.org/relationcwp/>  " + 
+					"prefix lc: <http://www.oop.org/>  " + 
+					"   " + 
+					"select  DISTINCT ?s ?p ?o where {  " + 
+					" 	?s ?p ?o. " + 
+					" FILTER regex(?s ,\"country\") "+
+					"filter( ?p = re:truy_sat)  " + 
+					"}";
+			
 	public static void ketqua1(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -181,6 +222,23 @@ public class QuerySimple {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time query: " + (endTime - begin) );
 	}
+	public static void ketqua5(String query) {
+		long begin = System.currentTimeMillis();
+		connection = backend.ConnectDB.getRepositoryConnection();
+		TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL,query);
+		TupleQueryResult result = tupleQuery.evaluate();
+		while (result.hasNext()) {
+			BindingSet bind = result.next();
+			String p = bind.getValue("Tennguoi").stringValue();
+			String l = bind.getValue("Tenevent").stringValue();
+			
+			System.out.printf( "Label : %s, Dec : %s\n",p,l);
+		
+//		
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time query: " + (endTime - begin) );
+	}
 	public static void ketqua4(String query) {
 		long begin = System.currentTimeMillis();
 		connection = backend.ConnectDB.getRepositoryConnection();
@@ -188,17 +246,16 @@ public class QuerySimple {
 		TupleQueryResult result = tupleQuery.evaluate();
 		while (result.hasNext()) {
 			BindingSet bind = result.next();
-			String s = bind.getValue("os").stringValue();
-			System.out.printf( "Label : %s\n",s);
+			String s = bind.getValue("s").stringValue();
+			System.out.printf( "Count : %s\n",s);
 		
-//		
 		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time query: " + (endTime - begin) );
 	}
 	public static void main (String args[]){
 
-		ketqua2(query2);
+		ketqua2(query14);
 	}
 	
 }
